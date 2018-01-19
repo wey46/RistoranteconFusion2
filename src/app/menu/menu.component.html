@@ -11,7 +11,7 @@
   
     <div fxFlex>
       <md-grid-list cols="2" rowHeight="200px">
-        <md-grid-tile *ngFor="let dish of dishes" (click)="onSelect(dish)">
+        <md-grid-tile *ngFor="let dish of dishes" [routerLink]="['/dishdetail', dish.id]"> <!-- where defined click action? -->
           <img height="200px" src={{dish.image}} alt={{dish.name}}>
           <md-grid-tile-footer>
             <h1 md-line>{{dish.name | uppercase }}</h1>
@@ -20,7 +20,10 @@
       </md-grid-list>
     </div>
     
+    <!-- use data binding, disabled and replaced with routing
     <app-dishdetail [dish]="selectedDish"></app-dishdetail>
+    -->
+
     <!-- dishdetail using card, disabled and replaced using new component
     <div fxFlex *ngIf="selectedDish">
       <md-card>
