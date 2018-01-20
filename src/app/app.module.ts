@@ -22,6 +22,7 @@ import { PromotionService } from './services/promotion.service';
 import { LeaderService } from './services/leader.service';
 
 import { AppRoutingModule } from './app-routing/app-routing.module';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
     FooterComponent,
     HomeComponent,
     AboutComponent,
-    ContactComponent
+    ContactComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -45,6 +47,7 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
     AppRoutingModule
   ],
   providers: [ DishService, PromotionService, LeaderService ],
+  entryComponents: [LoginComponent], //to make it is able to be opened from another component
   bootstrap: [AppComponent]
 })
 export class AppModule { }
