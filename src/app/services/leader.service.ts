@@ -1,23 +1,32 @@
 import { Injectable } from '@angular/core';
 
 import { Leader } from '../shared/leader';
-import { LEADERS } from '../shared/leaders';
+//import { LEADERS } from '../shared/leaders';
+import { baseURL } from '../shared/baseurl';
+import { Http, Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import { ProcessHttpmsgService } from './process-httpmsg.service';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
 
 @Injectable()
 export class LeaderService {
 
-  constructor() { }
+  constructor(private http:Http, private processHttpmsgService: ProcessHttpmsgService) { }
 
-  getLeaders(): Promise <Leader[]> {
-    return Promise.resolve(LEADERS);
+  getLeaders(): Observable <Leader[]> {
+    return this.http.get(baseURL + 'leaders')
+      .map(res => {return this.processHttpmsgService.extractData(res);});
   }
 
-  getLeader(id: number): Promise <Leader> {
-    return Promise.resolve(LEADERS.filter((lead) => (lead.id === id))[0]);
+  getLeader(id: number): Observable <Leader> {
+    return this.http.get(baseURL + 'leaders/' + id)
+      .map(res => {return this.processHttpmsgService.extractData(res);});
   }
 
-  getFeaturedLeader(): Promise<Leader> {
-    return Promise.resolve( LEADERS.filter((lead) => (lead.featured))[0]);
+  getFeaturedLeader(): Observable<Leader> {
+    return this.http.get(baseURL + 'leaders?featured=true')
+      .map(res => {return this.processHttpmsgService.extractData(res)[0];});
   }
 
 }

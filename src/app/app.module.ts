@@ -25,6 +25,8 @@ import { LeaderService } from './services/leader.service';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { LoginComponent } from './login/login.component';
 
+import { baseURL } from './shared/baseurl';
+import { ProcessHttpmsgService } from './services/process-httpmsg.service';
 
 @NgModule({
   declarations: [
@@ -48,7 +50,8 @@ import { LoginComponent } from './login/login.component';
     AppRoutingModule,
     ReactiveFormsModule
   ],
-  providers: [ DishService, PromotionService, LeaderService ],
+  providers: [ DishService, PromotionService, LeaderService, ProcessHttpmsgService,
+    { provide: 'BaseURL', useValue: baseURL} ],
   entryComponents: [LoginComponent], //to make it is able to be opened from another component
   bootstrap: [AppComponent]
 })

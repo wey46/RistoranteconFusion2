@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, Inject} from '@angular/core';
 
 import { Params, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -27,6 +27,8 @@ export class DishdetailComponent implements OnInit {
   commentForm: FormGroup;
   commentS: Comment;
 
+  errMess: string;
+
   formErrors = {
     'author':'',
     'comment':''
@@ -46,7 +48,8 @@ export class DishdetailComponent implements OnInit {
     private dishservice: DishService, 
     private location: Location, 
     private route: ActivatedRoute,
-    private fb: FormBuilder) {
+    private fb: FormBuilder,
+      @Inject('BaseURL') private BaseURL) {
       this.createForm();
     }
 
@@ -54,7 +57,8 @@ export class DishdetailComponent implements OnInit {
     this.dishservice.getDishIds().subscribe(dishIds => this.dishIds = dishIds);
     this.route.params
       .switchMap((params: Params) => this.dishservice.getDish(+params['id'])) // + is used to convert string to int; this line use observable 'params' into another observable 'dish'
-    .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); });
+    .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); },
+      errmess => this.errMess = <any> errmess);
   }
 
   setPrevNext(dishId: number) {

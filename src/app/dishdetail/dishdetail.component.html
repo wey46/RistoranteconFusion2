@@ -13,7 +13,7 @@
           <h3>{{ dish.name | uppercase}}</h3>
         </md-card-title>
       </md-card-header>
-      <img md-card-image src="{{dish.image}}" alt="{{dish.name}}">
+      <img md-card-image src="{{BaseURL + dish.image}}" alt="{{dish.name}}">
       <md-card-content>
         <p>{{dish.description}}</p>
       </md-card-content>
@@ -36,7 +36,6 @@
   </div>
 
   <div fxFlex="40" *ngIf="dish">
-    
     <md-card>
       <md-card-header>
         <md-card-title>
@@ -90,9 +89,14 @@
         <p> {{commentForm.value | json}} {{commentForm.status | json}} </p>
       </md-card-content>
     </md-card>
-
-    
-
+  </div>
+  
+  <div [hidden]="dish || errMess">
+    <md-spinner></md-spinner><h4>Loading . . . Please Wait</h4>
+  </div>
+  <div *ngIf="errMess">
+    <h2>Error</h2>
+    <p>{{errMess}}</p>
   </div>
 
 </div>
