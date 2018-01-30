@@ -40,7 +40,7 @@
         <h3>Send us your Feedback</h3>
         <p>{{ feedbackForm.value | json }} {{ feedbackForm.status | json }}</p>
 
-        <form novalidate [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
+        <form novalidate *ngIf="!submited" [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
           <p>
             <md-input-container class="half-width" 
               dividerColor=" {{formErrors.firstname ? 'warn' : 'primary' }} " >
@@ -99,6 +99,38 @@
           <button type="submit" md-button class="background-primary text-floral-white"
           [disabled]="feedbackForm.invalid" >Submit</button>
         </form>
+    </div>
+    <div fxFlex *ngIf="submited && !showData" [@expand]> 
+      <md-spinner></md-spinner>
+      <h4>Submitting Form...</h4>
+    </div>
+    <div *ngIf="errMess" [@expand]>
+      <h2>Error</h2>
+      <h4>{{errMess}}</h4>
+    </div>
+    <div fxFlex *ngIf="showData" [@expand]>
+      <h3>Your Submission</h3>
+      <p md-line>
+        <span> First Name: {{feedback.firstname}} </span>
+      </p>
+      <p md-line>
+        <span> Last Name: {{feedback.lastname}} </span>
+      </p>
+      <p md-line>
+        <span> Tel. Number: {{feedback.telnum}} </span>
+      </p>
+      <p md-line>
+        <span> Email: {{feedback.email}} </span>
+      </p>
+      <p md-line>
+        <span> Contact You?: {{feedback.agree}} </span>
+      </p>
+      <p md-line>
+        <span> How?: {{feedback.contacttype}} </span>
+      </p>
+      <p md-line>
+        <span> Feedback: {{feedback.message}} </span>
+      </p>
     </div>
 
 

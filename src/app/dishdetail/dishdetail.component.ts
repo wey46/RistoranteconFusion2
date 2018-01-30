@@ -107,8 +107,7 @@ export class DishdetailComponent implements OnInit {
     }
   }
 
-  onSubmit() { //how about date?
-    
+  onSubmit() {
     this.commentS = this.commentForm.value;
     this.commentS.date = new Date().toISOString();
     this.commentForm.reset({
