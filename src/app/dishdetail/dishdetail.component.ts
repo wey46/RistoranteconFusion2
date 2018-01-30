@@ -12,14 +12,21 @@ import { FormControl } from '@angular/forms/src/model';
 
 import 'rxjs/add/operator/switchMap';
 
+import { visibility,expand } from '../animations/app.animation';
+
 @Component({
   selector: 'app-dishdetail',
   templateUrl: './dishdetail.component.html',
-  styleUrls: ['./dishdetail.component.scss']
+  styleUrls: ['./dishdetail.component.scss'],
+  animations: [
+    visibility(),
+    expand()
+  ]
 })
 export class DishdetailComponent implements OnInit {
 
   dish: Dish;
+  dishcopy = null;
   dishIds: number[];
   prev: number;
   next: number;
@@ -28,6 +35,7 @@ export class DishdetailComponent implements OnInit {
   commentS: Comment;
 
   errMess: string;
+  visibility = 'shown';
 
   formErrors = {
     'author':'',
@@ -56,8 +64,8 @@ export class DishdetailComponent implements OnInit {
   ngOnInit() {
     this.dishservice.getDishIds().subscribe(dishIds => this.dishIds = dishIds);
     this.route.params
-      .switchMap((params: Params) => this.dishservice.getDish(+params['id'])) // + is used to convert string to int; this line use observable 'params' into another observable 'dish'
-    .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); },
+      .switchMap((params: Params) => {this.visibility = 'hidden'; return this.dishservice.getDish(+params['id']);}) // + is used to convert string to int; this line use observable 'params' into another observable 'dish'
+    .subscribe(dish => { this.dish = dish; this.dishcopy = dish; this.setPrevNext(dish.id); this.visibility = 'shown'; },
       errmess => this.errMess = <any> errmess);
   }
 
@@ -103,13 +111,14 @@ export class DishdetailComponent implements OnInit {
     
     this.commentS = this.commentForm.value;
     this.commentS.date = new Date().toISOString();
-    console.log(this.commentS);
     this.commentForm.reset({
       author:'',
       rating: 5,
       comment: ''
     });
-    this.dish.comments.push(this.commentS);
+    this.dishcopy.comments.push(this.commentS);
+    this.dishcopy.save()
+      .subscribe(dish => this.dish = dish);
   }
 
 }
